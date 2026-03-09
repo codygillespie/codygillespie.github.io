@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cody Gillespie</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="nav">
+      <a href="#" class="nav-logo">Cody Gillespie</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#resume">Resume</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#blog">Writing</a></li>
+        <li><a href="#contact" class="nav-cta">Hire Me</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Toggle menu">&#9776;</button>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="about">
+    <div class="container hero-inner">
+      <div>
+        <span class="hero-eyebrow">Hello, I'm</span>
+        <h1 class="hero-name">Cody Gillespie</h1>
+        <p class="hero-tagline">Software engineer with an M.S. in Computer Science, now freelancing. ML, web development, and more.</p>
+        <div class="hero-actions">
+          <a href="#contact">Get in touch</a>
+          <a href="#resume">View resume</a>
+        </div>
+      </div>
+      <div class="hero-aside">
+        <div class="headshot-wrap">
+          <img src="images/headshot.jpg" alt="Cody Gillespie" class="headshot"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <div class="headshot-placeholder"><span>Add photo</span></div>
+        </div>
+        <div class="avail-pill">
+          <span class="avail-dot"></span> Available
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESUME -->
+  <section class="section" id="resume">
+    <div class="container">
+      <p class="section-label">Resume</p>
+
+      <p class="group-label">Employment</p>
+      <div class="entries">
+
+        <div class="entry">
+          <span class="entry-date">Present</span>
+          <div>
+            <p class="entry-title">Freelance Software Engineer</p>
+            <p class="entry-org">Self-Employed — Remote</p>
+            <ul>
+              <li>Build custom web applications, tools, and digital products for clients</li>
+              <li>AI/ML engineering — prototyping through production</li>
+            </ul>
+            <div class="tags">
+              <span class="tag">Web Dev</span><span class="tag">AI/ML</span><span class="tag">JavaScript</span><span class="tag">Python</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="entry">
+          <span class="entry-date">Oct 2024 – Mar 2026</span>
+          <div>
+            <p class="entry-title">Patent Examiner, Artificial Intelligence</p>
+            <p class="entry-org">USPTO — Alexandria, VA (Remote)</p>
+            <ul>
+              <li>Examined AI patent applications for compliance with legal statutes and USPTO guidelines</li>
+              <li>Researched AI across commercial and private databases to track the state of the art</li>
+              <li>Drafted legal documents synthesizing patents, applications, and technical literature</li>
+              <li>Conducted interviews with inventors and attorneys of record</li>
+            </ul>
+            <div class="tags">
+              <span class="tag">Patent Law</span><span class="tag">Prior Art</span><span class="tag">AI</span><span class="tag">Legal Writing</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="entry">
+          <span class="entry-date">Jan 2020 – Oct 2024</span>
+          <div>
+            <p class="entry-title">Software Team Lead</p>
+            <p class="entry-org">Pyramid Technologies — Mesa, AZ</p>
+            <ul>
+              <li>Led development across software, firmware, and electrical engineering teams</li>
+              <li>Built ML algorithms for counterfeit currency detection; worked with the U.S. Federal Reserve on data collection and testing with seized counterfeit notes</li>
+              <li>Managed hiring, training, evaluation, and mentorship of software team members</li>
+            </ul>
+            <div class="tags">
+              <span class="tag">Team Leadership</span><span class="tag">Machine Learning</span><span class="tag">Computer Vision</span><span class="tag">C++</span><span class="tag">Python</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="entry">
+          <span class="entry-date">Aug 2017 – Dec 2019</span>
+          <div>
+            <p class="entry-title">Instructional Assistant</p>
+            <p class="entry-org">ASU School of Mathematical & Statistical Sciences — Tempe, AZ</p>
+            <ul>
+              <li>Assisted across 19 sections — precalculus through linear algebra and discrete math</li>
+              <li>Graded assignments, tutored students, proctored exams</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="entry">
+          <span class="entry-date">Sep 2018 – Sep 2019</span>
+          <div>
+            <p class="entry-title">Technical Writing Intern</p>
+            <p class="entry-org">ZF Friedrichshafen AG — Mesa, AZ</p>
+            <ul>
+              <li>Wrote and revised manufacturing documentation for ~200 procedures at an automotive plant</li>
+              <li>Led daily meetings with engineers, technicians, management, and international counterparts</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="entry">
+          <span class="entry-date">Summer 2018</span>
+          <div>
+            <p class="entry-title">Calculus Tutor</p>
+            <p class="entry-org">Joaquin Bustoz Math-Science Honors Program — Tempe, AZ</p>
+            <ul>
+              <li>Tutored high school students in a summer collegiate math program</li>
+              <li>Recognized for leadership after assuming section supervisor duties unexpectedly</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="group-label">Education</p>
+      <div class="entries">
+
+        <div class="entry">
+          <span class="entry-date">Aug 2023 – May 2025</span>
+          <div>
+            <p class="entry-title">M.S. Computer Science <span style="font-weight:400;color:var(--muted)">(Cybersecurity)</span></p>
+            <p class="entry-org">Arizona State University — Tempe, AZ</p>
+            <ul>
+              <li>GPA 4.0/4.0, graduated with distinction</li>
+              <li>AI & Machine Learning Professional Certification (July 2024)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="entry">
+          <span class="entry-date">Aug 2016 – Dec 2019</span>
+          <div>
+            <p class="entry-title">B.S. Computer Science <span style="font-weight:400;color:var(--muted)">(Software Engineering)</span></p>
+            <p class="entry-org">Arizona State University — Tempe, AZ</p>
+            <ul>
+              <li>Minor in Mathematics</li>
+              <li>Barrett, The Honors College — Thesis: <em>An IoT Solution to Pollution Monitoring</em></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="group-label">Extracurricular & Research</p>
+      <div class="entries">
+
+        <div class="entry">
+          <span class="entry-date">2016–2018, 2024–Present</span>
+          <div>
+            <p class="entry-title">Engineering Projects in Community Service (EPICS)</p>
+            <p class="entry-org">Arizona State University — Tempe, AZ</p>
+            <ul>
+              <li><strong>Industry Mentor (2024–present):</strong> Guide engineering teams in project management and community service work</li>
+              <li><strong>Student Engineer (2016–2018):</strong> Volunteered engineering skills on community projects across Phoenix</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="entry">
+          <span class="entry-date">Aug 2018 – Dec 2019</span>
+          <div>
+            <p class="entry-title">Undergraduate Researcher</p>
+            <p class="entry-org">ASU Pathfinder Center — Advisor: Dr. Leland Hartwell</p>
+            <ul>
+              <li>Analyzed interview transcripts of students who moved from the bottom to top third of their class by GPA</li>
+              <li>Authored a 15-page report with findings and a roadmap for future research</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="group-label">Awards</p>
+      <div class="entries">
+        <div class="entry">
+          <span class="entry-date">2026</span>
+          <div>
+            <p class="entry-title">Fulbright Semifinalist</p>
+            <p class="entry-org">English Teaching Assistantship — Uzbekistan</p>
+          </div>
+        </div>
+        <div class="entry">
+          <span class="entry-date">2016</span>
+          <div>
+            <p class="entry-title">National Merit Scholar</p>
+            <p class="entry-org">Awarded to top scoring students on the PSAT/NMSQT</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="resume-footer"><a href="#">Download PDF</a></p>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section" id="services">
+    <div class="container">
+      <p class="section-label">Services</p>
+      <div class="services">
+        <div class="service">
+          <h3>Web Development</h3>
+          <p>Custom websites and web apps — fast, accessible, easy to maintain.</p>
+        </div>
+        <div class="service">
+          <h3>AI & ML Engineering</h3>
+          <p>Prototypes to production pipelines. Built real-world ML detection systems.</p>
+        </div>
+        <div class="service">
+          <h3>MVPs & Prototypes</h3>
+          <p>Something real to put in front of users, without the overhead.</p>
+        </div>
+      </div>
+      <p class="section-footer">Interested? <a href="#contact">Get in touch.</a></p>
+    </div>
+  </section>
+
+  <!-- WRITING -->
+  <section class="section" id="blog">
+    <div class="container">
+      <p class="section-label">Writing</p>
+      <p class="section-footer" style="color:var(--faint)">Posts coming soon.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="container">
+      <p class="section-label">Contact</p>
+      <div class="contact-links">
+        <a href="mailto:Cody.Gillespie.AZ@gmail.com">Cody.Gillespie.AZ@gmail.com</a>
+<a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>&copy; 2026 Cody Gillespie</span>
+      <span>Built with HTML, CSS & JS</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
