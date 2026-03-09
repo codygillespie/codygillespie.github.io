@@ -280,7 +280,7 @@ a:hover { text-decoration: underline; }
 
 /* ---- MOBILE ---- */
 
-@media (max-width: 560px) {
+@media (max-width: 768px) {
   .nav-links { display: none; }
   .nav-toggle { display: none; }
 
