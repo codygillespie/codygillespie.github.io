@@ -49,3 +49,41 @@ fadeEls.forEach(el => {
   el.classList.add('fade-in');
   fadeObserver.observe(el);
 });
+
+// Copy buttons on article code/prompt blocks
+document.querySelectorAll('.article-body pre').forEach(pre => {
+  const wrap = document.createElement('div');
+  wrap.className = 'code-block';
+  pre.parentNode.insertBefore(wrap, pre);
+  wrap.appendChild(pre);
+
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'copy-btn';
+  btn.textContent = 'Copy';
+  btn.setAttribute('aria-label', 'Copy prompt to clipboard');
+  wrap.appendChild(btn);
+
+  btn.addEventListener('click', async () => {
+    const text = pre.innerText;
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    }
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    clearTimeout(btn._t);
+    btn._t = setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 1500);
+  });
+});

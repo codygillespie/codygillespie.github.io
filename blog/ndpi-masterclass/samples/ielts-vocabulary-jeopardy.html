@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Vocabulary Jeopardy – Units 9–12</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #0b1d4a;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; }
+
+  /* ---------- Header ---------- */
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.6vh 1.5vw;
+    background: #071233;
+  }
+  header h1 { font-size: clamp(14px, min(2.4vw, 4vh), 40px); letter-spacing: 1px; color: #ffcc33; }
+  .small-btn {
+    background: #33447a; color: #fff; font-size: clamp(12px, min(1.3vw, 2.4vh), 22px);
+    padding: 0.6em 1.1em; border-radius: 8px;
+  }
+  .small-btn:hover { background: #4a5c96; }
+  .small-btn.armed { background: #c0392b; }
+
+  /* ---------- Board ---------- */
+  #main { flex: 1; position: relative; min-height: 0; display: flex; }
+  #board {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: minmax(0, 0.8fr) repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.6vw;
+    padding: 0.8vw 1.2vw;
+    min-height: 0;
+  }
+  .cat {
+    background: #142d78; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    font-size: clamp(11px, min(2.1vw, 3.6vh), 38px); font-weight: 800; text-transform: uppercase;
+    min-height: 0; overflow: hidden;
+    padding: 0.3em; line-height: 1.1;
+  }
+  .tile {
+    background: #1f44b8; border-radius: 10px; color: #ffcc33;
+    font-size: clamp(14px, min(4.4vw, 7.5vh), 80px); font-weight: 900;
+    min-height: 0; padding: 0; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    text-shadow: 3px 3px 0 #000a;
+    transition: transform 0.1s, background 0.1s;
+  }
+  .tile:hover:not(.used) { background: #2a56dd; transform: scale(1.03); }
+  .tile.used { background: #2a2f3e; color: #555b6b; text-shadow: none; cursor: default; }
+
+  /* ---------- Scoreboard (always visible) ---------- */
+  #scoreboard {
+    display: flex; gap: 1vw; padding: 0.8vh 1.2vw 1.2vh;
+    background: #071233;
+    position: relative; z-index: 30;   /* stays above the question screen */
+  }
+  .team {
+    flex: 1 1 0; min-width: 0; background: #142d78; border-radius: 12px;
+    padding: 0.5vh 1vw; display: flex; align-items: center; gap: 1vw;
+    border: 4px solid transparent;
+  }
+  .team input {
+    flex: 1; min-width: 0; width: 100%; background: transparent; border: none; color: #fff;
+    font-size: clamp(13px, min(2.2vw, 4vh), 40px); font-weight: 700; font-family: inherit;
+    border-bottom: 2px dashed #ffffff44;
+  }
+  .team input:focus { outline: none; border-bottom-color: #ffcc33; }
+  .team .score {
+    font-size: clamp(16px, min(3.4vw, 6vh), 60px); font-weight: 900; color: #ffcc33; min-width: 3ch; text-align: right;
+  }
+  .team .score.neg { color: #ff6b6b; }
+  .adj { display: flex; flex-direction: column; gap: 3px; }
+  .adj button {
+    background: #33447a; color: #fff; font-size: clamp(9px, min(0.9vw, 1.7vh), 16px);
+    padding: 2px 6px; border-radius: 4px;
+  }
+  .adj button:hover { background: #4a5c96; }
+
+  /* ---------- Question screen ---------- */
+  #qscreen {
+    position: absolute; inset: 0; z-index: 20;
+    background: #0d2366;
+    display: none; flex-direction: column; align-items: center;
+    padding: 1.5vh 4vw 1.5vh;
+  }
+  #qscreen.open { display: flex; }
+  #qmeta {
+    font-size: clamp(12px, min(2.2vw, 3.9vh), 38px); color: #9fb3ff; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  #timerWrap { width: 60%; margin: 0.5vh 0 0; text-align: center; }
+  #timerWrap.done #timerBtns { visibility: hidden; }
+  #timerNum { font-size: clamp(18px, min(3.8vw, 6.6vh), 70px); font-weight: 900; color: #fff; }
+  #timerNum.low { color: #ff6b6b; }
+  #timerBarOuter { height: 1.4vh; background: #ffffff22; border-radius: 99px; overflow: hidden; }
+  #timerBar { height: 100%; width: 100%; background: #4cd964; transition: width 1s linear, background 0.3s; }
+  #timerBar.low { background: #ff6b6b; }
+  #timerBtns { margin-top: 1vh; display: flex; gap: 0.8vw; justify-content: center; }
+
+  #qtext {
+    flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; text-align: center;
+    font-size: clamp(17px, min(3.6vw, 6.3vh), 68px); font-weight: 700; line-height: 1.25;
+    max-width: 92%;
+  }
+  #answerBox { display: none; text-align: center; margin-bottom: 1.5vh; max-width: 92%; }
+  #answerBox.show { display: block; }
+  #atext { font-size: clamp(21px, min(4.6vw, 8.0vh), 84px); font-weight: 900; color: #ffcc33; }
+  #aexp { font-size: clamp(12px, min(2.2vw, 3.9vh), 38px); margin-top: 1vh; line-height: 1.3; }
+  #auz { font-size: clamp(12px, min(2.1vw, 3.7vh), 36px); margin-top: 0.8vh; color: #8ff0b0; font-style: italic; }
+
+  .big-btn {
+    font-size: clamp(13px, min(2.4vw, 4.2vh), 42px); font-weight: 800;
+    padding: 0.5em 1.4em; border-radius: 12px;
+    background: #ffcc33; color: #071233;
+  }
+  .big-btn:hover { filter: brightness(1.1); }
+  #scoring { display: none; flex-direction: row; align-items: center; gap: 1.5vw; flex-wrap: wrap; justify-content: center; }
+  #scoring.show { display: flex; }
+  #teamBtns { display: flex; gap: 1.5vw; flex-wrap: wrap; justify-content: center; }
+  .team-score-btns {
+    background: #142d78; border-radius: 12px; padding: 0.8vh 1vw;
+    display: flex; flex-direction: column; align-items: center; gap: 0.6vh;
+  }
+  .team-score-btns .tname { font-size: clamp(10px, min(1.8vw, 3.1vh), 30px); font-weight: 700; }
+  .team-score-btns .row { display: flex; gap: 0.6vw; }
+  .ok, .bad {
+    font-size: clamp(10px, min(1.8vw, 3.1vh), 30px); font-weight: 800; padding: 0.35em 0.8em; border-radius: 10px; color: #fff;
+  }
+  .ok { background: #27ae60; } .bad { background: #c0392b; }
+  .ok:disabled, .bad:disabled { background: #555b6b; color: #999; cursor: default; }
+  #noPoints { background: #33447a; color: #fff; font-size: clamp(10px, min(1.8vw, 3.1vh), 30px); padding: 0.6em 1em; }
+
+  /* ---------- Winner screen ---------- */
+  #winner {
+    position: fixed; inset: 0; z-index: 40; background: #071233ee;
+    display: none; flex-direction: column; align-items: center; justify-content: center; gap: 3vh;
+    text-align: center;
+  }
+  #winner.open { display: flex; }
+  #winner h2 { font-size: clamp(40px, 6vw, 110px); color: #ffcc33; }
+  #winnerName { font-size: clamp(32px, 4.5vw, 80px); font-weight: 900; }
+  #finalScores { font-size: clamp(20px, 2.4vw, 42px); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>IELTS VOCABULARY JEOPARDY · UNITS 9–12</h1>
+  <button class="small-btn" id="resetBtn">New game</button>
+</header>
+
+<div id="main">
+<div id="board"></div>
+
+<div id="qscreen">
+  <div id="qmeta"></div>
+  <div id="timerWrap">
+    <div id="timerNum">30</div>
+    <div id="timerBarOuter"><div id="timerBar"></div></div>
+    <div id="timerBtns">
+      <button class="small-btn" id="pauseBtn">Pause</button>
+      <button class="small-btn" id="restartBtn">Restart timer</button>
+    </div>
+  </div>
+  <div id="qtext"></div>
+  <div id="answerBox">
+    <div id="atext"></div>
+    <div id="aexp"></div>
+    <div id="auz"></div>
+  </div>
+  <button class="big-btn" id="showBtn">Show answer</button>
+  <div id="scoring">
+    <div id="teamBtns"></div>
+    <button class="big-btn" id="noPoints">Close – no points</button>
+  </div>
+</div>
+</div>
+
+<div id="winner">
+  <h2>GAME OVER!</h2>
+  <div id="winnerName"></div>
+  <div id="finalScores"></div>
+  <button class="big-btn" id="winnerReset">New game</button>
+</div>
+
+<div id="scoreboard"></div>
+
+<script>
+/* =====================================================================
+   QUESTIONS — edit freely.
+   Each category has a name and exactly 5 questions (100 → 500).
+     q   = the question shown on screen
+     a   = the correct answer
+     exp = one-sentence explanation (English)
+     uz  = short Uzbek explanation / translation
+   ===================================================================== */
+const CATEGORIES = [
+  {
+    name: "Natural World",
+    questions: [
+      { q: "An animal that is hunted and eaten by another animal is called ___.",
+        a: "prey",
+        exp: "Prey is an animal that is hunted for food; the hunter is the predator.",
+        uz: "o'lja" },
+      { q: "Bears ___ in winter: they sleep until spring.",
+        a: "hibernate",
+        exp: "To hibernate means to spend the winter in a long, deep sleep.",
+        uz: "qish uyqusiga ketmoq" },
+      { q: "The plants in an area are its flora. The animals in an area are its ___.",
+        a: "fauna",
+        exp: "Fauna means all the animals of an area; flora means all the plants.",
+        uz: "hayvonot dunyosi" },
+      { q: "Cutting down the forest has destroyed the ecological ___ of the region.",
+        a: "balance",
+        exp: "Ecological balance is the stable relationship between living things and their environment.",
+        uz: "ekologik muvozanat" },
+      { q: "The panda is ___: very few are left. The dodo is ___: none are left at all.",
+        a: "endangered / extinct",
+        exp: "Endangered = in danger of disappearing; extinct = gone completely, none left alive.",
+        uz: "yo'qolib ketish xavfi ostida / qirilib ketgan" }
+    ]
+  },
+  {
+    name: "Into Space",
+    questions: [
+      { q: "A person trained to travel into space.",
+        a: "astronaut",
+        exp: "An astronaut is a person trained to travel and work in space.",
+        uz: "kosmonavt, fazogir" },
+      { q: "The force that pulls objects towards the Earth.",
+        a: "gravity",
+        exp: "Gravity is the force that pulls things towards a planet.",
+        uz: "tortishish kuchi" },
+      { q: "The first missions to Mars were ___: there were no people on board.",
+        a: "unmanned",
+        exp: "Unmanned means with no people on board, e.g. an unmanned spacecraft.",
+        uz: "uchuvchisiz, ekipajsiz" },
+      { q: "Nothing could live on Venus. The planet is ___. (Hint: starts with un-)",
+        a: "uninhabitable",
+        exp: "Uninhabitable means impossible to live in; the opposite is habitable.",
+        uz: "yashash uchun yaroqsiz" },
+      { q: "An ___ is a large rock that orbits the Sun. A ___ burns up in Earth's atmosphere as a \"shooting star\".",
+        a: "asteroid / meteor",
+        exp: "An asteroid is a big rock orbiting the Sun; a meteor is a rock that burns up in our atmosphere.",
+        uz: "asteroid / meteor" }
+    ]
+  },
+  {
+    name: "Design & Building",
+    questions: [
+      { q: "A very tall building with many floors, like the ones in New York.",
+        a: "skyscraper",
+        exp: "A skyscraper is a building so tall it seems to \"scrape\" the sky.",
+        uz: "osmono'par bino" },
+      { q: "The opposite of spacious: \"Five of us lived in one tiny room. It was so ___.\"",
+        a: "cramped",
+        exp: "Cramped means too small for the number of people or things in it.",
+        uz: "tor, siqiq" },
+      { q: "A famous building that helps you recognise a city, like the Eiffel Tower.",
+        a: "landmark",
+        exp: "A landmark is a famous building or place that is easy to recognise.",
+        uz: "diqqatga sazovor joy" },
+      { q: "The government built cheap ___ houses from parts made in a factory. (PREFABRICATE)",
+        a: "prefabricated",
+        exp: "Prefabricated buildings are made from factory parts and put together on site.",
+        uz: "yig'ma, oldindan tayyorlangan" },
+      { q: "The earthquake completely destroyed the old theatre, so the city decided to ___ it exactly as it was.",
+        a: "reconstruct",
+        exp: "Reconstruct = build again after it was destroyed; renovate = repair a building that is still standing.",
+        uz: "qayta qurmoq" }
+    ]
+  },
+  {
+    name: "Tech Talk",
+    questions: [
+      { q: "A small, portable computer you can use on your lap.",
+        a: "laptop",
+        exp: "A laptop is a small, portable computer.",
+        uz: "noutbuk" },
+      { q: "To copy a file from the internet onto your computer.",
+        a: "download",
+        exp: "To download is to copy data from the internet to your device; the opposite is upload.",
+        uz: "yuklab olmoq" },
+      { q: "This app is very ___. Even my grandmother can use it easily.",
+        a: "user-friendly",
+        exp: "User-friendly means easy to use, even for beginners.",
+        uz: "foydalanishga qulay" },
+      { q: "In 1995, my father's office became ___. (COMPUTER)",
+        a: "computerised",
+        exp: "Computerised means using computers for work that was done by hand before.",
+        uz: "kompyuterlashtirilgan" },
+      { q: "The new phone's sales ___ all expectations. They were much higher than anyone predicted.",
+        a: "surpassed",
+        exp: "To surpass means to be better or greater than something.",
+        uz: "oshib ketmoq, ortda qoldirmoq" }
+    ]
+  },
+  {
+    name: "Mix It Up",
+    questions: [
+      { q: "Which word doesn't belong: astronaut, rocket, satellite, timber?",
+        a: "timber",
+        exp: "Timber is wood used for building; the other three are space words.",
+        uz: "yog'och (qurilish uchun)" },
+      { q: "Terrestrial means \"relating to the Earth\". Which word means \"relating to the Sun\"?",
+        a: "solar",
+        exp: "Solar means relating to the Sun, as in solar system or solar energy.",
+        uz: "quyoshga oid" },
+      { q: "People have ___ dogs for thousands of years. (DOMESTIC)",
+        a: "domesticated",
+        exp: "Domesticated animals have been tamed to live with people.",
+        uz: "xonakilashtirilgan" },
+      { q: "Correct the mistake: \"The architect's design was very innovation.\"",
+        a: "innovative",
+        exp: "We need the adjective innovative (new and creative); innovation is the noun.",
+        uz: "innovatsion, yangicha" },
+      { q: "Many experts believe human travel to Mars is ___: it is certain to happen sooner or later. (Hint: starts with in-)",
+        a: "inevitable",
+        exp: "Inevitable means certain to happen; it cannot be avoided.",
+        uz: "muqarrar" }
+    ]
+  }
+];
+
+/* ---------- Settings ---------- */
+const TIMER_SECONDS = 30;
+const DEFAULT_TEAMS = ["Team 1", "Team 2", "Team 3"];
+const STORAGE_KEY = "ielts-jeopardy-u9-12";
+
+/* ===================================================================== */
+
+const $ = id => document.getElementById(id);
+let state;          // { teams:[{name,score}], used:[ "c-q", ... ] }
+let current = null; // { c, q, points, wrongTeams:Set }
+let timerLeft = TIMER_SECONDS, timerId = null, timerRunning = false;
+
+function freshState() {
+  return { teams: DEFAULT_TEAMS.map(n => ({ name: n, score: 0 })), used: [] };
+}
+function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} }
+function load() {
+  try {
+    const s = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (s && Array.isArray(s.teams) && Array.isArray(s.used)) return s;
+  } catch (e) {}
+  return freshState();
+}
+
+/* ---------- Board ---------- */
+function renderBoard() {
+  const b = $("board");
+  b.innerHTML = "";
+  CATEGORIES.forEach(cat => {
+    const d = document.createElement("div");
+    d.className = "cat"; d.textContent = cat.name;
+    b.appendChild(d);
+  });
+  for (let q = 0; q < 5; q++) {
+    CATEGORIES.forEach((cat, c) => {
+      const t = document.createElement("button");
+      const key = c + "-" + q;
+      t.className = "tile" + (state.used.includes(key) ? " used" : "");
+      t.textContent = (q + 1) * 100;
+      t.onclick = () => { if (!state.used.includes(key)) openQuestion(c, q); };
+      b.appendChild(t);
+    });
+  }
+}
+
+/* ---------- Scoreboard ---------- */
+function renderScores() {
+  const sb = $("scoreboard");
+  sb.innerHTML = "";
+  state.teams.forEach((team, i) => {
+    const d = document.createElement("div");
+    d.className = "team";
+    const inp = document.createElement("input");
+    inp.value = team.name;
+    inp.oninput = () => { team.name = inp.value; save(); };
+    inp.onchange = () => { if (!inp.value.trim()) { team.name = DEFAULT_TEAMS[i]; inp.value = team.name; } save(); if (current) renderTeamBtns(); };
+    const sc = document.createElement("div");
+    sc.className = "score" + (team.score < 0 ? " neg" : "");
+    sc.textContent = team.score;
+    const adj = document.createElement("div");
+    adj.className = "adj";
+    adj.title = "Manual correction (±100)";
+    const plus = document.createElement("button"); plus.textContent = "+100";
+    const minus = document.createElement("button"); minus.textContent = "−100";
+    plus.onclick = () => { team.score += 100; save(); renderScores(); };
+    minus.onclick = () => { team.score -= 100; save(); renderScores(); };
+    adj.append(plus, minus);
+    d.append(inp, sc, adj);
+    sb.appendChild(d);
+  });
+}
+
+/* ---------- Question screen ---------- */
+function openQuestion(c, q) {
+  const item = CATEGORIES[c].questions[q];
+  current = { c, q, points: (q + 1) * 100, wrongTeams: new Set() };
+  $("qmeta").textContent = CATEGORIES[c].name + " · " + current.points;
+  $("qtext").textContent = item.q;
+  $("atext").textContent = item.a;
+  $("aexp").textContent = item.exp;
+  $("auz").textContent = "O'zbekcha: " + item.uz;
+  $("answerBox").classList.remove("show");
+  $("scoring").classList.remove("show");
+  $("showBtn").style.display = "";
+  $("timerWrap").classList.remove("done");
+  $("qscreen").classList.add("open");
+  startTimer();
+}
+
+function showAnswer() {
+  stopTimer();
+  $("answerBox").classList.add("show");
+  $("showBtn").style.display = "none";
+  $("timerWrap").classList.add("done");
+  renderTeamBtns();
+  $("scoring").classList.add("show");
+}
+
+function renderTeamBtns() {
+  const box = $("teamBtns");
+  box.innerHTML = "";
+  state.teams.forEach((team, i) => {
+    const d = document.createElement("div");
+    d.className = "team-score-btns";
+    const n = document.createElement("div");
+    n.className = "tname"; n.textContent = team.name;
+    const row = document.createElement("div"); row.className = "row";
+    const ok = document.createElement("button");
+    ok.className = "ok"; ok.textContent = "✓ +" + current.points;
+    const bad = document.createElement("button");
+    bad.className = "bad"; bad.textContent = "✗ −" + current.points;
+    if (current.wrongTeams.has(i)) { ok.disabled = true; bad.disabled = true; }
+    ok.onclick = () => { team.score += current.points; closeQuestion(); };
+    bad.onclick = () => {
+      team.score -= current.points;
+      current.wrongTeams.add(i);
+      save(); renderScores(); renderTeamBtns();
+    };
+    row.append(ok, bad);
+    d.append(n, row);
+    box.appendChild(d);
+  });
+}
+
+function closeQuestion() {
+  stopTimer();
+  state.used.push(current.c + "-" + current.q);
+  current = null;
+  save();
+  $("qscreen").classList.remove("open");
+  renderBoard(); renderScores();
+  if (state.used.length >= CATEGORIES.length * 5) showWinner();
+}
+
+/* ---------- Timer ---------- */
+function drawTimer() {
+  $("timerNum").textContent = timerLeft > 0 ? timerLeft : "Time's up!";
+  const low = timerLeft <= 10;
+  $("timerNum").classList.toggle("low", low);
+  $("timerBar").classList.toggle("low", low);
+  $("timerBar").style.width = (timerLeft / TIMER_SECONDS * 100) + "%";
+  $("pauseBtn").textContent = timerRunning ? "Pause" : "Resume";
+}
+function tick() {
+  timerLeft--;
+  if (timerLeft <= 0) { timerLeft = 0; stopTimer(); beep(); }
+  drawTimer();
+}
+function startTimer() {
+  stopTimer();
+  timerLeft = TIMER_SECONDS;
+  // reset bar instantly (no animation), then start
+  const bar = $("timerBar");
+  bar.style.transition = "none"; drawTimer(); void bar.offsetWidth; bar.style.transition = "";
+  timerRunning = true; drawTimer();
+  timerId = setInterval(tick, 1000);
+}
+function stopTimer() { clearInterval(timerId); timerId = null; timerRunning = false; drawTimer(); }
+function togglePause() {
+  if (timerLeft <= 0) return;
+  if (timerRunning) stopTimer();
+  else { timerRunning = true; timerId = setInterval(tick, 1000); drawTimer(); }
+}
+function beep() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [0, 0.3, 0.6].forEach(t => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.frequency.value = 660; o.connect(g); g.connect(ctx.destination);
+      g.gain.setValueAtTime(0.3, ctx.currentTime + t);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.25);
+      o.start(ctx.currentTime + t); o.stop(ctx.currentTime + t + 0.25);
+    });
+  } catch (e) {}
+}
+
+/* ---------- Winner ---------- */
+function showWinner() {
+  const sorted = state.teams.map(t => ({ ...t })).sort((a, b) => b.score - a.score);
+  const top = sorted[0].score;
+  const winners = sorted.filter(t => t.score === top);
+  $("winnerName").textContent = winners.length > 1
+    ? "It's a tie: " + winners.map(w => w.name).join(" & ") + "!"
+    : "🏆 " + winners[0].name + " wins!";
+  $("finalScores").innerHTML = "";
+  sorted.forEach(t => {
+    const line = document.createElement("div");
+    line.textContent = t.name + ": " + t.score;
+    $("finalScores").appendChild(line);
+  });
+  $("winner").classList.add("open");
+}
+
+/* ---------- Reset (click twice to confirm) ---------- */
+let resetArmed = null;
+function resetGame(force) {
+  const btn = $("resetBtn");
+  if (!force && !resetArmed) {
+    btn.textContent = "Click again to reset";
+    btn.classList.add("armed");
+    resetArmed = setTimeout(() => { resetArmed = null; btn.textContent = "New game"; btn.classList.remove("armed"); }, 3000);
+    return;
+  }
+  clearTimeout(resetArmed); resetArmed = null;
+  btn.textContent = "New game"; btn.classList.remove("armed");
+  const names = state.teams.map(t => t.name);   // keep team names
+  state = freshState();
+  state.teams.forEach((t, i) => t.name = names[i] || t.name);
+  current = null; stopTimer();
+  $("qscreen").classList.remove("open");
+  $("winner").classList.remove("open");
+  save(); renderBoard(); renderScores();
+}
+
+/* ---------- Wire up ---------- */
+$("showBtn").onclick = showAnswer;
+$("noPoints").onclick = closeQuestion;
+$("pauseBtn").onclick = togglePause;
+$("restartBtn").onclick = startTimer;
+$("resetBtn").onclick = () => resetGame(false);
+$("winnerReset").onclick = () => resetGame(true);
+
+state = load();
+renderBoard();
+renderScores();
+if (state.used.length >= CATEGORIES.length * 5) showWinner();
+</script>
+</body>
+</html>
