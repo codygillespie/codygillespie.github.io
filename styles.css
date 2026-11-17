@@ -140,26 +140,6 @@ a:hover { text-decoration: underline; }
   padding: 0.5rem;
 }
 
-.avail-pill {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.7rem;
-  color: #16a34a;
-}
-
-.avail-dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: #22c55e;
-  animation: blink 2s ease-in-out infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-
 /* ---- SECTIONS ---- */
 
 .section {
@@ -343,7 +323,6 @@ a:hover { text-decoration: underline; }
   .hero { padding: 4rem 0 2rem; }
   .hero-inner { flex-direction: column-reverse; gap: 0.75rem; }
   .hero-aside { flex-direction: row; align-items: center; }
-  .avail-pill { display: none; }
 
   .entry, .post { grid-template-columns: 1fr; gap: 0.1rem; }
   .entry-date, .post-date { color: var(--faint); font-size: 0.73rem; }
